@@ -80,16 +80,14 @@
                 }
             });
 
-            // 결과 요약 표시
             const resultSummary = document.getElementById('result-summary');
             resultSummary.style.display = "block";
             resultSummary.innerText = `${name}, Your Final Score: ${score} / ${questions.length}`;
             
-            // 버튼 비활성화 (중복 제출 방지)
             document.getElementById('submit-btn').disabled = true;
             document.getElementById('submit-btn').innerText = "Submitted Successfully";
 
-            // 구글 폼 전송 섹션 (교수님이 직접 수정하실 부분)
+            // 교수님의 구글 폼 정보 연동 완료
             const formID = "1FAIpQLSftIn2VTfxqc5OkGf9u_Tuq7CoddB3Z9Jewn8QmxBPdEXdjdQ"; 
             const nameEntry = "entry.180590308"; 
             const scoreEntry = "entry.767064954"; 
@@ -99,7 +97,7 @@
                 .then(() => console.log("Data sent to Google Forms"))
                 .catch(e => console.error("Error sending data"));
 
-            window.scrollTo(0, 0); // 상단으로 이동하여 결과 확인 유도
+            window.scrollTo(0, 0);
         }
     </script>
 </body>
