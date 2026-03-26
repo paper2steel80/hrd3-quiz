@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HRD Foundations & Perspectives Comprehensive Quiz</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.6; padding: 20px; max-width: 700px; margin: auto; background: #f0f2f5; color: #333; }
+        h1 { color: #2c3e50; text-align: center; border-bottom: 2px solid #3498db; padding-bottom: 10px; }
+        .info-card { background: #fff; padding: 15px; border-radius: 8px; margin-bottom: 20px; border-left: 5px solid #3498db; }
+        .card { background: white; padding: 20px; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); margin-bottom: 25px; }
+        .question { font-weight: bold; font-size: 1.1em; margin-bottom: 15px; color: #2c3e50; }
+        .options { list-style: none; padding: 0; }
+        .options li { margin-bottom: 10px; padding: 8px; border-radius: 5px; transition: 0.2s; }
+        .options li:hover { background: #f8f9fa; }
+        input[type="radio"] { margin-right: 10px; cursor: pointer; }
+        label { cursor: pointer; display: block; width: 100%; }
+        .hint { display: none; margin-top: 15px; padding: 10px; border-radius: 5px; font-size: 0.9em; border: 1px dashed #ccc; }
+        .correct-hint { background: #e8f5e9; color: #2e7d32; border-color: #a5d6a7; display: block; }
+        .wrong-hint { background: #ffebee; color: #c62828; border-color: #ef9a9a; display: block; }
+        #submit-btn { background: #3498db; color: white; border: none; padding: 15px 30px; border-radius: 5px; cursor: pointer; width: 100%; font-size: 18px; font-weight: bold; }
+        #submit-btn:hover { background: #2980b9; }
+        #result-summary { margin-top: 30px; text-align: center; font-size: 1.5em; font-weight: bold; color: #2c3e50; display: none; }
+        input[type="text"] { width: 95%; padding: 10px; margin-top: 10px; border: 1px solid #ddd; border-radius: 5px; }
+    </style>
+</head>
+<body>
+    <h1>HRD Theory & Perspectives Quiz</h1>
+    
+    <div class="info-card">
+        <label><strong>Student Name:</strong></label>
+        <input type="text" id="studentName" placeholder="Enter your full name">
+    </div>
+
+    <div id="quiz-container"></div>
+    
+    <button id="submit-btn" onclick="submitToGoogle()">Submit & Check Answers</button>
+    <div id="result-summary"></div>
+
+    <script>
+        const questions = [
+            { q: "1. Which economic theory focuses on the efficient allocation of limited resources (time, budget) based on ROI?", a: "Scarce Resource Theory", h: "Hint: Resources are finite, so we must prioritize investments strategically.", opts: ["Scarce Resource Theory", "Human Capital Theory", "Sustainable Resource Theory", "General System Theory"] },
+            { q: "2. Which psychology views learning as a change in behavior through 'Stimulus-Response' and reinforcement?", a: "Behavioral Psychology", h: "Hint: Think of rewards, punishments, and observable actions.", opts: ["Gestalt Psychology", "Behavioral Psychology", "Cognitive Psychology", "Futures Theory"] },
+            { q: "3. The 'Functionalist Perspective' views HRD primarily as a tool for achieving organizational goals. (T/F)", a: "True", h: "Hint: Functionalism is performance-oriented and views HRD as a mechanical tool.", opts: ["True", "False"] },
+            { q: "4. Which systems theory explores underlying patterns and order within complex, unpredictable environments?", a: "Chaos Theory", h: "Hint: Small changes can lead to large effects in complex systems.", opts: ["Chaos Theory", "General System Theory", "Futures Theory", "Human Capital Theory"] },
+            { q: "5. Which HRD perspective focuses on 'emancipation' and questioning power imbalances within an organization?", a: "Critical Perspective", h: "Hint: This perspective challenges the status quo and advocates for ethics.", opts: ["Functionalist Perspective", "Interpretive Perspective", "Critical Perspective", "Economic Perspective"] },
+            { q: "6. Sustainable Resource Theory emphasizes long-term competitive advantage over short-term returns. (T/F)", a: "True", h: "Hint: Sustainability focuses on maintaining and expanding resources for future resilience.", opts: ["True", "False"] },
+            { q: "7. In the Interpretive Perspective, the HRD professional acts as a 'Facilitator of Meaning.' (T/F)", a: "True", h: "Hint: Interpretivism focuses on shared understanding and organizational culture.", opts: ["True", "False"] },
+            { q: "8. Gestalt Psychology helps learners gain ________ into the whole system through holistic perception.", a: "Insight", h: "Hint: It's the 'A-ha!' moment of understanding the entire structure.", opts: ["Insight", "Reinforcement", "Profit", "Chaos"] },
+            { q: "9. Human Capital Theory treats education as an 'investment' that increases productivity. (T/F)", a: "True", h: "Hint: It views knowledge and skills as capital that adds market value.", opts: ["True", "False"] },
+            { q: "10. Which theory is used to explore alternative futures and design a preferred future state?", a: "Futures Theory", h: "Hint: It focuses on scenario planning and proactive change.", opts: ["General System Theory", "Futures Theory", "Purposive-Behaviorism", "Scarce Resource Theory"] }
+        ];
+
+        const container = document.getElementById('quiz-container');
+        questions.forEach((item, index) => {
+            let html = `<div class="card" id="card-${index}"><div class="question">${item.q}</div><ul class="options">`;
+            item.opts.forEach(opt => {
+                html += `<li><label><input type="radio" name="q${index}" value="${opt}"> ${opt}</label></li>`;
+            });
+            html += `</ul><div id="hint-${index}" class="hint"></div></div>`;
+            container.innerHTML += html;
+        });
+
+        function submitToGoogle() {
+            const name = document.getElementById('studentName').value;
+            if(!name) { alert("Please enter your name first!"); return; }
+
+            let score = 0;
+            questions.forEach((item, index) => {
+                const selected = document.querySelector(`input[name="q${index}"]:checked`);
+                const hintBox = document.getElementById(`hint-${index}`);
+                
+                if (selected && selected.value === item.a) {
+                    score++;
+                    hintBox.innerHTML = `<strong>Correct!</strong> ${item.h}`;
+                    hintBox.className = "hint correct-hint";
+                } else {
+                    hintBox.innerHTML = `<strong>Incorrect.</strong> The answer is '${item.a}'. <br>${item.h}`;
+                    hintBox.className = "hint wrong-hint";
+                }
+            });
+
+            // 결과 요약 표시
+            const resultSummary = document.getElementById('result-summary');
+            resultSummary.style.display = "block";
+            resultSummary.innerText = `${name}, Your Final Score: ${score} / ${questions.length}`;
+            
+            // 버튼 비활성화 (중복 제출 방지)
+            document.getElementById('submit-btn').disabled = true;
+            document.getElementById('submit-btn').innerText = "Submitted Successfully";
+
+            // 구글 폼 전송 섹션 (교수님이 직접 수정하실 부분)
+            const formID = "여기에_구글폼_ID_입력"; 
+            const nameEntry = "entry.이름항목ID"; 
+            const scoreEntry = "entry.점수항목ID"; 
+            const actionURL = `https://docs.google.com/forms/d/e/${formID}/formResponse?${nameEntry}=${encodeURIComponent(name)}&${scoreEntry}=${score}&submit=Submit`;
+
+            fetch(actionURL, { mode: 'no-cors' })
+                .then(() => console.log("Data sent to Google Forms"))
+                .catch(e => console.error("Error sending data"));
+
+            window.scrollTo(0, 0); // 상단으로 이동하여 결과 확인 유도
+        }
+    </script>
+</body>
+</html>
