@@ -90,9 +90,9 @@
             document.getElementById('submit-btn').innerText = "Submitted Successfully";
 
             // 구글 폼 전송 섹션 (교수님이 직접 수정하실 부분)
-            const formID = "여기에_구글폼_ID_입력"; 
-            const nameEntry = "entry.이름항목ID"; 
-            const scoreEntry = "entry.점수항목ID"; 
+            const formID = "1FAIpQLSftIn2VTfxqc5OkGf9u_Tuq7CoddB3Z9Jewn8QmxBPdEXdjdQ"; 
+            const nameEntry = "entry.180590308"; 
+            const scoreEntry = "entry.767064954"; 
             const actionURL = `https://docs.google.com/forms/d/e/${formID}/formResponse?${nameEntry}=${encodeURIComponent(name)}&${scoreEntry}=${score}&submit=Submit`;
 
             fetch(actionURL, { mode: 'no-cors' })
